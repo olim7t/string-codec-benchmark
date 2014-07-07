@@ -13,14 +13,20 @@ public class StringCodecWithThreadLocal implements StringCodec {
             return utf8Charset.newDecoder();
         }
     };
+    private static final ThreadLocal<CharsetEncoder> utf8Encoders = new ThreadLocal<CharsetEncoder>() {
+        @Override
+        protected CharsetEncoder initialValue() {
+            return utf8Charset.newEncoder();
+        }
+    };
 
     @Override
     public ByteBuffer serialize(String value) throws Exception {
-        return utf8Charset.newEncoder().encode(CharBuffer.wrap(value));
+        return utf8Encoders.get().encode(CharBuffer.wrap(value));
     }
 
     @Override
     public String deserialize(ByteBuffer bytes) throws Exception {
-        return utf8Charset.newDecoder().decode(bytes.duplicate()).toString();
+        return utf8Decoders.get().decode(bytes.duplicate()).toString();
     }
 }

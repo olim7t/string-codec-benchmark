@@ -18,7 +18,7 @@ public class StringCodecBenchmark {
 
     @Benchmark
     public String testCodecWithoutThreadLocal() throws Exception {
-        return testCodec(new StringCodecWithThreadLocal());
+        return testCodec(new StringCodecWithoutThreadLocal());
     }
 
     @Benchmark
